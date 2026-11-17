@@ -6,6 +6,8 @@ right inside Quick View (`Ctrl+Q`), powered by [libmpv](https://mpv.io/).
 Unlike plugins that embed an mpv window through `--wid`, this one renders frames off-screen and paints them
 into a regular Qt widget, so it works on Wayland as well as on X11.
 
+![Video playing in Double Commander Quick View](docs/screenshot.png)
+
 ## Features
 
 - Audio and video playback in Quick View with the standard mpv on-screen controller (seek bar, play/pause, volume).
