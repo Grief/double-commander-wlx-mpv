@@ -571,6 +571,7 @@ private:
 
     QSize deviceSize() const;
     void onRendererReady(bool ready);
+    int startPlayback(const QByteArray& path);
     void releaseVideoOutputWhileRendering();
     void waitUntilVideoOutputReleased();
     void scheduleRepaint();
@@ -679,7 +680,7 @@ void MpvView::onRendererReady(bool ready)
     for (const MpvOption& option : kMpvOptionsRequiringRenderContext)
         api_.set_option_string(mpv_, option.name, option.value);
     if (!pendingPath_.isEmpty())
-        command({"loadfile", pendingPath_.constData()});
+        startPlayback(pendingPath_);
     pendingPath_.clear();
 }
 
@@ -689,8 +690,14 @@ bool MpvView::load(const QByteArray& path)
         pendingPath_ = path;
         return true;
     }
-    const int status = command({"loadfile", path.constData()});
+    const int status = startPlayback(path);
     return status >= 0;
+}
+
+int MpvView::startPlayback(const QByteArray& path)
+{
+    command({"set", "pause", "no"});
+    return command({"loadfile", path.constData()});
 }
 
 void MpvView::drainEvents()
